@@ -1,0 +1,75 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "taskName": "docker-build",
+            "dependsOn": "docker-stop",
+            "isBuildCommand": true,
+            "command": "docker",
+            "suppressTaskName": true,
+            "args": [ "build", "-t", "my-go-app", "." ]
+        },
+        {
+            "taskName": "docker-watch",
+            "dependsOn": "docker-build",
+            "command": "docker",
+            "suppressTaskName": true,
+            "args": [
+                "run",
+                "--name", "my-go-app",
+                "-v", "${workspaceRoot}:/.src",
+                "-p", "8080:80",
+                "--entrypoint", "/bin/sh",
+                "--rm",
+                "my-go-app",
+                "/.src/.vscode/docker/run.sh", "go-wrapper", "run"
+            ],
+            "isBackground": true
+        },
+        {
+            "taskName": "debug",
+            "dependsOn": "build",
+            "command": "docker",
+            "suppressTaskName": true,
+            "args": [
+                "run",
+                "--name", "my-go-app",
+                "--cap-add", "SYS_PTRACE",
+                "-v", "${workspaceRoot}/.vscode/dlv:/go/bin/dlv",
+                "-v", "${workspaceRoot}:/.src",
+                "-p", "2345:2345",
+                "-p", "8080:80",
+                "--entrypoint", "/bin/sh",
+                "--rm",
+                "my-go-app",
+                "/.src/.vscode/run.sh", "dlv", "debug", "--headless", "-l", "0.0.0.0:2345", "--log"
+            ],
+            "isBackground": true
+        },
+        {
+            "taskName": "docker-run",
+            "dependsOn": "docker-build",
+            "command": "docker",
+            "suppressTaskName": true,
+            "args": [
+                "run",
+                "--name", "my-go-app",
+                "-p", "8080:80",
+                "--rm",
+                "my-go-app"
+            ],
+            "isBackground": true
+        },
+        {
+            "taskName": "docker-stop",
+            "isShellCommand": true,
+            "command": "docker stop my-go-app || echo -n",
+            "windows": {
+                "isShellCommand": false,
+                "command": "docker",
+                "args": [ "stop", "my-go-app" ]
+            },
+            "suppressTaskName": true
+        }
+    ]
+}

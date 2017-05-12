@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Go launch (Docker)",
+            "type": "go",
+            "request": "launch",
+            "preLaunchTask": "debug",
+            "mode": "remote",
+            "host": "127.0.0.1",
+            "port": 2345,
+            "remotePath": "/go/src/app",
+            "program": "${workspaceRoot}"
+        }
+    ]
+}
