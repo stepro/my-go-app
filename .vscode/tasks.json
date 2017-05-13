@@ -27,22 +27,22 @@
             "isBackground": true
         },
         {
-            "taskName": "debug",
-            "dependsOn": "build",
+            "taskName": "docker-debug",
+            "dependsOn": "docker-build",
             "command": "docker",
             "suppressTaskName": true,
             "args": [
                 "run",
                 "--name", "my-go-app",
                 "--cap-add", "SYS_PTRACE",
-                "-v", "${workspaceRoot}/.vscode/dlv:/go/bin/dlv",
+                "-v", "${workspaceRoot}/.vscode/docker/dlv:/go/bin/dlv",
                 "-v", "${workspaceRoot}:/.src",
                 "-p", "2345:2345",
                 "-p", "8080:80",
                 "--entrypoint", "/bin/sh",
                 "--rm",
                 "my-go-app",
-                "/.src/.vscode/run.sh", "dlv", "debug", "--headless", "-l", "0.0.0.0:2345", "--log"
+                "/.src/.vscode/docker/run.sh", "dlv", "debug", "--headless", "--listen", "0.0.0.0:2345", "--log"
             ],
             "isBackground": true
         },

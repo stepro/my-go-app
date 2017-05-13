@@ -5,12 +5,13 @@
             "name": "Go launch (Docker)",
             "type": "go",
             "request": "launch",
-            "preLaunchTask": "debug",
+            "preLaunchTask": "docker-debug",
             "mode": "remote",
             "host": "127.0.0.1",
             "port": 2345,
             "remotePath": "/go/src/app",
-            "program": "${workspaceRoot}"
+            "program": "${workspaceRoot}",
+            "trace": "verbose"
         }
     ]
 }
