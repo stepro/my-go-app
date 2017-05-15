@@ -2,6 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "taskName": "install",
+            "command": "go",
+            "suppressTaskName": true,
+            "args": [ "install" ]
+        },
+        {
             "taskName": "docker-build",
             "dependsOn": "docker-stop",
             "isBuildCommand": true,
